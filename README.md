@@ -8,6 +8,5 @@ Currently Locationator supports:
 
 ## Todo:
 
-* add api support
 * add error handlers
 
