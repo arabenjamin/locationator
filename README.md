@@ -1,6 +1,6 @@
 ## Locationator
 
-A simple python package to  preform basic geocodeing operations.
+A simple python package to  perform basic geocoding operations.
 Currently Locationator supports:
 * Geocoding
 * Reverse geocodeing
