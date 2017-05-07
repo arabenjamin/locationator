@@ -46,7 +46,7 @@ class Locationator():
         url = self.google_base_url + path
         
         # using the url, reach out with requests and get the lat/lng of the provided address
-        latlng = requests.get(url).json()['results'][0]['geometry']['location']
+        latlng = requests.get(url, headers = self.headers).json()['results'][0]['geometry']['location']
         return (latlng['lat'], latlng['lng'])
 		
     def reverse_geocode(self,lat_lng):
@@ -65,7 +65,7 @@ class Locationator():
         # put url together
         url = self.google_base_url + path    
             
-        return requests.get(url).json()['results'][0]['formatted_address']
+        return requests.get(url, headers=self.headers).json()['results'][0]['formatted_address']
 		
     def geocode_ip(self,ip_address):
 	
@@ -77,6 +77,6 @@ class Locationator():
 			#: @return:       
 			
 		url = "http://ipinfo.io/{0}".format(ip_address)	
-		return requests.get(url).json()['loc']
+		return requests.get(url, headers=self.headers).json()['loc']
  	
 		
