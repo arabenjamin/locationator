@@ -3,7 +3,7 @@
 A simple python package to  perform basic geocoding operations.
 Currently Locationator supports:
 * Geocoding
-* Reverse geocodeing
+* Reverse geocoding
 * geocodeing Ip addresses 
 
 ## Todo:
