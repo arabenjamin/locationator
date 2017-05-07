@@ -21,8 +21,10 @@ class Locationator():
 			#: @method:     This method DOES NOT require an API key from, the Google, 
 			#:			           although if you use this method a thousand times in a secound
 			#:                    Google may see it fit to decline your requests.
-			
-        url =  'https://maps.googleapis.com/maps/api/geocode/json?address={0}'.format(address)
+        url =  'https://maps.googleapis.com/maps/api/geocode/json?address={0}'.format(address)    
+		if self.api_key is not None:
+            url = 'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address,self.api_key)
+        
         latlng = requests.get(url).json()['results'][0]['geometry']['location']
         return (latlng['lat'], latlng['lng'])
 		
@@ -33,6 +35,8 @@ class Locationator():
 			#: @retunr:       returns an address as string
 			
 		url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+str(lat_lng[0])+","+str(lat_lng[1])
+        if self.api_key is not None:
+            url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={0},{1}&key={2}".format(str(lat_lng[0]),str(lat_lng[1]),self.api_key)
 		return requests.get(url).json()['results'][0]['formatted_address']
 		
     def geocode_ip(self,ip_address):
