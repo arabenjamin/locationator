@@ -5,39 +5,58 @@ import requests
 class Locationator():
 
     def __init__(self,API_KEY=None):
-		self.api_key = API_KEY#change this variable
-		self.headers = {"User-Agent": self.user_agent()} 
+        self.api_key = API_KEY#change this variable
+        self.headers = {"User-Agent": self.user_agent()}
+        self.google_base_url = "https://maps.googleapis.com/maps/api/geocode/json"
 		
+        
     def user_agent(self):
 	
 		""" Declare ourselves """
+        
 		return "Locationator/{0} (A Python package for getting geocode data)".format(locationator.__version__)
 
     def geocode(self,address):
 	
         """ Converts addresses into geographic coordinates."""
-			#: @parameter:  Must be a string.
-			#: @return:       Returns a tuple contianing lat/lng.
-			#: @method:     This method DOES NOT require an API key from, the Google, 
-			#:			           although if you use this method a thousand times in a secound
-			#:                    Google may see it fit to decline your requests.
-        url =  'https://maps.googleapis.com/maps/api/geocode/json?address={0}'.format(address)    
-		if self.api_key is not None:
-            url = 'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address,self.api_key)
         
+			#: @parameter:  Must be a string.
+			#: @return:     Returns a tuple contianing lat/lng.
+			#: @method:     This method DOES NOT require an API key from, the Google, 
+			#:			    although if you use this method a thousand times in a secound
+			#:              Google may see it fit to decline your requests.
+            
+        # set the api path
+        path = '?address={0}'.format(address)      
+        
+        # use the api key if it's available
+        if self.api_key is not None:
+            path = '?address={0}&key={1}'.format(address,self.api_key)
+            
+        # put url together    
+        url = self.google_base_url + path
+        
+        # using the url, reach out with requests and get the lat/lng of the provided address
         latlng = requests.get(url).json()['results'][0]['geometry']['location']
         return (latlng['lat'], latlng['lng'])
 		
     def reverse_geocode(self,lat_lng):
 	
-		""" Reverse geocoding is the process of converting geographic coordinates into a human-readable address."""
-			#: @parameter: given a lat/lng 
-			#: @retunr:       returns an address as string
-			
-		url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+str(lat_lng[0])+","+str(lat_lng[1])
+        """ Reverse geocoding is the process of converting geographic coordinates into a human-readable address."""
+			#: @parameter: given a lat/lng tuple
+			#: @retunr:    returns an address as string
+            
+        # set the api path
+        path = "?latlng="+str(lat_lng[0])+","+str(lat_lng[1])
+        
+        # use the api key if it's available
         if self.api_key is not None:
-            url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={0},{1}&key={2}".format(str(lat_lng[0]),str(lat_lng[1]),self.api_key)
-		return requests.get(url).json()['results'][0]['formatted_address']
+			path = "?latlng={0},{1}&key={2}".format(str(lat_lng[0]),str(lat_lng[1]),self.api_key)
+            
+        # put url together
+        url = self.google_base_url + path    
+            
+        return requests.get(url).json()['results'][0]['formatted_address']
 		
     def geocode_ip(self,ip_address):
 	
@@ -52,7 +71,3 @@ class Locationator():
 		return requests.get(url).json()['loc']
  	
 		
-if __name__ == "__main__":
-	address = "3009 NE 120th St, Seattle Wa, 98125"
-	location = Locationator()
-	location.geocode(address)
