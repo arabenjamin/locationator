@@ -6,6 +6,12 @@ Currently Locationator supports:
 * Reverse geocoding
 * geocodeing Ip addresses
 
+## Install:
+```
+git clone https://github.com/arabenjamin/locationator.git
+cd locationator
+pip install .
+```
 
 ## Usage:
 ```python
