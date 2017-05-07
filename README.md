@@ -7,6 +7,7 @@ Currently Locationator supports:
 * geocodeing Ip addresses
 
 ## Install:
+For now I'm going with...
 ```
 git clone https://github.com/arabenjamin/locationator.git
 cd locationator
