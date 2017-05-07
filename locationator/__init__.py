@@ -6,7 +6,7 @@ __author__ = "Ara"
 
 
 if __name__ == "__main__":
-	address = "3009 NE 120th St, Seattle Wa, 98125"
+	address = "1537 Paper St., Wilmington, DE 19886"
 	location = Locationator()
 	location.user_agent()
 	location.geocode(address)
