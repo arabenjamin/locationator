@@ -50,5 +50,5 @@ class Locationator():
 		
 if __name__ == "__main__":
 	address = "3009 NE 120th St, Seattle Wa, 98125"
-	location = Locationator(locationator.G_API_KEY)
+	location = Locationator(l)
 	location.geocode(address)
