@@ -1,3 +1,5 @@
+#!/usr/bin/python
+from error_handler import NetworkError, InvalidAddressError, InvalidCoordError, EmptyParameterError
 import locationator
 import requests
 
@@ -25,6 +27,13 @@ class Locationator():
 			#: @method:     This method DOES NOT require an API key from, the Google, 
 			#:			    although if you use this method a thousand times in a secound
 			#:              Google may see it fit to decline your requests.
+        
+        # Make sure it's not nothing
+        if address is None or len(address) == 0:
+            raise EmptyParameterError("Won't work with an empty address")
+        # make sure it's the right type    
+        elif not isinstance(address, (str, unicode)):
+            raise InvalidAddressError("address must be a string")
             
         # set the api path
         path = '?address={0}'.format(address)      
