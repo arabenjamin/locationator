@@ -83,16 +83,27 @@ class Locationator():
             raise NetworkError('Requests ran into a problem with your HTTP request')
             return None
         
-    def geocode_ip(self,ip_address):
+    def geocode_ip(self,ip_address=None):
 	
-		""" get the geocode for the supplied Ip address """
+        """ get the geocode for the supplied Ip address """
 			#: @method: Method uses ipinfo.io, it's polite to use an API key
 			#:                which can be found here: https://ipinfo.io/pricing
 			#: @parameter: takes an ip_address as a string
 			#: @variable:   
-			#: @return:       
-			
-		url = "http://ipinfo.io/{0}".format(ip_address)	
-		return requests.get(url, headers=self.headers).json()['loc']
+			#: @return:
+        
+        if ip_address == None:
+            url = "http://ipinfo.io/"
+            r = requests.get(url)
+            return tuple(r.json()['loc'])
+            
+        # Check to see if it's a valid Ip address    
+        if len(ip_address.split('.')) != 4:
+            raise InvalidIPAddress('Please use valid IPv4 ip address')
+            
+        url = "http://ipinfo.io/{0}".format(ip_address)    
+        
+        
+        return requests.get(url, headers=self.headers).json()['loc']
  	
 		

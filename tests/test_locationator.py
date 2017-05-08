@@ -14,7 +14,7 @@ class TestClass:
         assert isinstance(Locationator().reverse_geocode(lat_lng), (str,unicode)) == True
 
     def test_geocode_ip(self):
-        assert Locationator().geocode_ip()
+        assert isinstance(Locationator().geocode_ip(), (tuple,tuple)) == True
 
 
 if __name__ == "__main__":
