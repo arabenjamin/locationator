@@ -1,0 +1,4 @@
+.pyc
+.egg
+tests/__pycache
+.cache
