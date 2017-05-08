@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from error_handler import NetworkError, InvalidAddressError, InvalidCoordError, EmptyParameterError
+from error_handler import NetworkError, InvalidAddressError, InvalidCoordError, EmptyParameterError, RequestException
 import locationator
 import requests
 
@@ -31,6 +31,7 @@ class Locationator():
         # Make sure it's not nothing
         if address is None or len(address) == 0:
             raise EmptyParameterError("Won't work with an empty address")
+            
         # make sure it's the right type    
         elif not isinstance(address, (str, unicode)):
             raise InvalidAddressError("address must be a string")
@@ -44,16 +45,27 @@ class Locationator():
             
         # put url together    
         url = self.google_base_url + path
-        
-        # using the url, reach out with requests and get the lat/lng of the provided address
-        latlng = requests.get(url, headers = self.headers).json()['results'][0]['geometry']['location']
-        return (latlng['lat'], latlng['lng'])
+        try:
+            # using the url, reach out with requests and get the lat/lng of the provided address
+            latlng = requests.get(url, headers = self.headers).json()['results'][0]['geometry']['location']
+            return (latlng['lat'], latlng['lng'])
+        except RequestException:
+            raise NetworkError('Requests ran into a problem with your HTTP request')
+            return None
 		
     def reverse_geocode(self,lat_lng):
 	
         """ Reverse geocoding is the process of converting geographic coordinates into a human-readable address."""
 			#: @parameter: given a lat/lng tuple
 			#: @retunr:    returns an address as string
+            
+        # Make sure it's not nothing, or empty, or half full
+        if lat_lng is None or len(lat_lng) < 2:
+            raise EmptyParameterError("Latitude and Longitude must be in a Tuple")
+            
+         # make sure it's the right type   
+        if not isinstance(lat_lng,(tuple,tuple))
+            raise InvalidCoordError("Latitude and Longitude must be in a Tuple")
             
         # set the api path
         path = "?latlng="+str(lat_lng[0])+","+str(lat_lng[1])
@@ -64,9 +76,13 @@ class Locationator():
             
         # put url together
         url = self.google_base_url + path    
-            
-        return requests.get(url, headers=self.headers).json()['results'][0]['formatted_address']
-		
+        
+        try:
+            return requests.get(url, headers=self.headers).json()['results'][0]['formatted_address']
+		except RequestException:
+            raise NetworkError('Requests ran into a problem with your HTTP request')
+            return None
+        
     def geocode_ip(self,ip_address):
 	
 		""" get the geocode for the supplied Ip address """
