@@ -64,7 +64,7 @@ class Locationator():
             raise EmptyParameterError("Latitude and Longitude must be in a Tuple")
             
          # make sure it's the right type   
-        if not isinstance(lat_lng,(tuple,tuple))
+        if not isinstance(lat_lng,(tuple,tuple)):
             raise InvalidCoordError("Latitude and Longitude must be in a Tuple")
             
         # set the api path
@@ -79,7 +79,7 @@ class Locationator():
         
         try:
             return requests.get(url, headers=self.headers).json()['results'][0]['formatted_address']
-		except RequestException:
+        except RequestException:
             raise NetworkError('Requests ran into a problem with your HTTP request')
             return None
         

@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+from requests.exceptions import RequestException
 
 class NetworkError(Exception):
     """something wouldn't connect"""
