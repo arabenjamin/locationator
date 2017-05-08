@@ -1,5 +1,10 @@
-from locationator import Locationator
+#!/usr/bin/python
+import locationator
+from locationator import Locationator 
+print locationator.__version__
 
+
+print locationator.__verison__
 address = "1537 Paper St., Wilmington, DE 19886"
 lat_lng = Locationator().geocode(address)
 
