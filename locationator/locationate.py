@@ -69,10 +69,12 @@ class Locationator():
         # put url together
         url = self.google_base_url + path
         try:
-            return requests.get(url, headers = self.headers).json()['results'][0]['address_components'][6]['short_name']
+            return requests.get(url, headers = self.headers).json()['results'][0]['address_components'][-1:][0]['short_name']
         except RequestException:
             raise NetworkError('Requests ran into a problem with your HTTP request')
-            return None
+
+
+        return None
 
     def reverse_geocode(self,lat_lng):
 
